@@ -1,0 +1,12 @@
+{
+  "name": "technical_challenge_2",
+  "version": "1.0.0",
+  "description": "BIT Institute Module 4 Tehcnical Challenge 2",
+  "license": "ISC",
+  "author": "Sergio Enrique Polo Santanilla",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
