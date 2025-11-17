@@ -14,4 +14,4 @@ export const updateBet = async ( req, res ) => {
 
 export const deleteBet = async ( req, res ) => {
 
-}
+} 
