@@ -1,17 +1,10 @@
 import { rouletteModel } from '../models/roulette.models.js';
 
 export const createRoulette = async ( req, res ) =>{
-    const numbers = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36];
-    const colors = ['Red', 'Black'];
-
     try {
-        const newRoulette = {
-            rouletteNumbers: numbers,
-            rouletteColors: colors
-        }
-        const roulette = await rouletteModel.create(newRoulette);
-
-        return res.status(200).json({
+        const roulette = await rouletteModel.create({});
+        console.log(roulette)
+        return res.status(201).json({
             msg: 'Mesa de apuestas creada correctamente, las apuestas estan abiertas por un periodo de 10 minutos',
             id: roulette._id
         })
@@ -23,8 +16,60 @@ export const createRoulette = async ( req, res ) =>{
     }
 }
 
-export const updateRoulette = async ( req, res ) =>{
+export const openRoulette = async ( req, res ) =>{
+    const rouletteId = req.params.id;
+    
+    try {
+        const roulette = await rouletteModel.findById(rouletteId);
+        if(!roulette) return res.status(404).json({msg: 'No se encontro la ruleta buscada'});
+        if (roulette.status === 'open') return res.status(400).json({msg: 'La ruleta ya se encuentra abierta'});
+        roulette.status = 'open';
 
+        await roulette.save();
+        res.status(200).json({msg: 'Ruleta abierta con éxito todos pueden apostar'})
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Error al abrir la mesa de apuestas',
+            error: error.message
+        })
+    }
+}
+
+export const closeRoulette = async ( req, res ) =>{
+    const rouletteId = req.params.id;
+    try {
+        const roulette = await rouletteModel.findById(rouletteId).populate('bets');
+        if(!roulette) return res.status(400).json({
+            msg: 'No se encontró la ruleta desaeada'
+        })
+        if(roulette.status !== 'open') return res.status(400).json({
+            msg: 'La ruleta ya se encuentra cerrada'
+        })
+
+        const winnerNumber = Math.floor(Math.random()*37);
+        const winnerColor = Math.floorwinnerNumber % 2 === 0 ? 'red': 'black';
+
+        roulette = {
+            ...roulette,
+            winnerNumber: winnerNumber,
+            winnerColor: winnerColor,
+            status: 'closed'
+        }
+
+        await roulette.save();
+
+        res.status(200).json({
+            msg: 'Ruleta cerrada correctamente',
+            winnerNumber,
+            winnerColor
+        })
+        
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Se presento un erro al momento de cerrar la mesa',
+            error: error.message
+        })
+    }
 }
 
 export const getRoulettes = async ( req, res ) => {
