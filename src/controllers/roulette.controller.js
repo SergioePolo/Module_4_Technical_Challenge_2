@@ -1,4 +1,5 @@
 import { rouletteModel } from '../models/roulette.models.js';
+import { betModel } from '../models/bet.models.js';
 
 export const createRoulette = async ( req, res ) =>{
     try {

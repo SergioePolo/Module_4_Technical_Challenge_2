@@ -30,7 +30,7 @@ export const createBet = async ( req, res ) => {
             })
         }
         const newBet = await betModel.create(data);
-        rouletteModel.bets.push(newBet._id);
+        roulette.bets.push(newBet._id);
         await roulette.save();
 
         return res.status(200).json({
