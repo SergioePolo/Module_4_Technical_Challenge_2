@@ -18,7 +18,7 @@ const rouletterSchema = new Schema(
         enum: ["red", "black"],
         },
         bets: {
-        type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bet" }],
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: "bets" }],
         default: [],
         },
     },

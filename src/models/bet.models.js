@@ -5,7 +5,7 @@ const betSchema = new Schema(
     {
         rouletteId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "roulette",
+        ref: "roulettes",
         required: true,
         },
         type: {
@@ -28,7 +28,14 @@ const betSchema = new Schema(
             max: 10000,
             required: true
         },
-
+        won: {
+            type: Boolean,
+            default: null
+        },
+        winnings:{
+            type: Number,
+            default: 0
+        }
     },
     {
         timestamps: true,
